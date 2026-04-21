@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-family-sans: 'DM Sans', system-ui, sans-serif;
+  --color-stone-bg: #F5F2EE;
+}
+
+body {
+  background-color: #F5F2EE;
+  font-family: 'DM Sans', system-ui, sans-serif;
+}
