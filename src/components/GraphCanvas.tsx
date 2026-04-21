@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import ReactFlow, {
   Background,
   Controls,
-  MarkerType,
-  addEdge,
   useNodesState,
   useEdgesState,
 } from 'reactflow';
@@ -12,22 +10,16 @@ import type {
   Edge,
   Connection,
   NodeMouseHandler,
-  OnNodesChange,
   ReactFlowInstance,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import OutcomeNode from './OutcomeNode';
+import { DependencyEdge } from './DependencyEdge';
 import { useStore } from '../store/useStore';
 import type { OutcomeStatus } from '../types/outcome';
 
 const nodeTypes = { outcome: OutcomeNode };
-
-const statusColors: Record<OutcomeStatus, string> = {
-  todo: '#E8E2D9',
-  wait: '#C4B8D4',
-  inprogress: '#D4A87A',
-  done: '#9AB89A',
-};
+const edgeTypes = { dependency: DependencyEdge };
 
 function outcomeToNode(o: { id: string; title: string; status: OutcomeStatus; position_x: number; position_y: number }, selectedId: string | null): Node {
   return {
@@ -68,9 +60,7 @@ export const GraphCanvas: React.FC = () => {
         id: d.id,
         source: d.from_outcome_id,
         target: d.to_outcome_id,
-        type: 'default',
-        style: { stroke: '#C8BFB4', strokeWidth: 2 },
-        markerEnd: { type: MarkerType.ArrowClosed, color: '#C8BFB4' },
+        type: 'dependency',
       }))
     );
   }, [dependencies]);
@@ -143,11 +133,12 @@ export const GraphCanvas: React.FC = () => {
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onNodeClick={onNodeClick}
         onPaneClick={onPaneClick}
-        onPaneDoubleClick={onPaneDoubleClick}
+        onDoubleClick={onPaneDoubleClick}
         onConnect={onConnect}
         onEdgesDelete={onEdgesDelete}
         onNodeDragStop={onNodeDragStop}

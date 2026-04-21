@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { TopBar } from './components/TopBar';
 import { GraphCanvas } from './components/GraphCanvas';

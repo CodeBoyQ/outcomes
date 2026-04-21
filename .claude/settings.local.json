@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"D:/Google Drive/Areas/Growth & Explore/Saas/businessideas/Outcomes/outcomes/src/components\" -name \"*.tsx\" -exec basename {} \\\\;)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
