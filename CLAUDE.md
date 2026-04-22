@@ -52,6 +52,27 @@ Outcomes have: `title`, `status` (`todo` | `wait` | `inprogress` | `done`), `str
 
 Dependency edges are directed; cycle detection runs on every attempted connection to keep the graph a DAG.
 
+### Dependency Direction (non-obvious)
+
+`from_outcome_id → to_outcome_id` means **`to` depends on `from`** (arrow points from prerequisite to dependent). So "blocks" and "depends on" relationships are the inverse of the arrow direction. An outcome can only be set to `done` if all outcomes it depends on (`to_outcome_id = this.id`) are already `done`.
+
+### Store Patterns
+
+- `saveStatus: 'saved' | 'saving' | 'error' | 'idle'` — set during `updateOutcome`; displayed in TopBar
+- `toastMessage` — auto-clears after 3 seconds; used by `addDependency` to surface validation errors (cycle detected, duplicate edge)
+- `isSupabaseConfigured()` checks that the URL starts with `'https://'` and doesn't contain the literal string `'your_supabase'`
+- localStorage keys: `'outcomer_outcomes'` and `'outcomer_dependencies'`
+
+### SidePanel State
+
+SidePanel maintains local copies of all fields; changes require an explicit Save. State resets when `outcome.id` changes. Delete is a two-stage confirmation flow.
+
+### Gotchas
+
+- Status colors are defined in both `OutcomeNode.tsx` and `SidePanel.tsx` — changes to the palette need updates in both files.
+- `updatePosition` is called on every drag-stop with no debounce; rapid moves can fire many Supabase writes.
+- `deadline` is stored as a plain string; no validation or past-deadline warnings exist.
+
 ### Persistence
 
 Supabase is the primary store. If `VITE_SUPABASE_URL` is not a valid HTTPS URL the client is `null` and the store transparently falls back to `localStorage`. This enables fully offline use.

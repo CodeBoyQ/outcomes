@@ -12,6 +12,7 @@ export const DependencyEdge: React.FC<EdgeProps> = ({
   targetY,
   targetPosition,
   selected,
+  markerEnd,
 }) => {
   const deleteDependency = useStore((s) => s.deleteDependency);
 
@@ -23,7 +24,7 @@ export const DependencyEdge: React.FC<EdgeProps> = ({
         id={id}
         path={edgePath}
         style={{ stroke: selected ? '#8B7355' : '#C8BFB4', strokeWidth: selected ? 2.5 : 2 }}
-        markerEnd={`url(#arrow-${selected ? 'selected' : 'default'})`}
+        markerEnd={markerEnd}
         interactionWidth={16}
       />
       {selected && (

@@ -4,6 +4,7 @@ import ReactFlow, {
   Controls,
   useNodesState,
   useEdgesState,
+  MarkerType,
 } from 'reactflow';
 import type {
   Node,
@@ -61,6 +62,7 @@ export const GraphCanvas: React.FC = () => {
         source: d.from_outcome_id,
         target: d.to_outcome_id,
         type: 'dependency',
+        markerEnd: { type: MarkerType.ArrowClosed, color: '#C8BFB4' },
       }))
     );
   }, [dependencies]);
