@@ -116,11 +116,38 @@ const PageItem: React.FC<{
 
 export const PageSidebar: React.FC = () => {
   const { pages, currentPageId, createPage, switchPage, updatePageName, deletePage } = useStore();
+  const [width, setWidth] = useState(200);
+  const dragging = useRef(false);
+  const startX = useRef(0);
+  const startWidth = useRef(0);
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    dragging.current = true;
+    startX.current = e.clientX;
+    startWidth.current = width;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    const onMouseMove = (ev: MouseEvent) => {
+      if (!dragging.current) return;
+      const next = Math.max(140, Math.min(400, startWidth.current + ev.clientX - startX.current));
+      setWidth(next);
+    };
+    const onMouseUp = () => {
+      dragging.current = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+  };
 
   return (
     <div
       style={{
-        width: 200,
+        width,
         flexShrink: 0,
         height: '100%',
         background: 'white',
@@ -128,6 +155,7 @@ export const PageSidebar: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         userSelect: 'none',
+        position: 'relative',
       }}
     >
       {/* Section header */}
@@ -172,6 +200,22 @@ export const PageSidebar: React.FC = () => {
           />
         ))}
       </div>
+
+      {/* Resize handle */}
+      <div
+        onMouseDown={onMouseDown}
+        style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: 4,
+          height: '100%',
+          cursor: 'col-resize',
+          zIndex: 10,
+        }}
+        onMouseEnter={e => (e.currentTarget.style.background = '#D0C9C0')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+      />
     </div>
   );
 };
