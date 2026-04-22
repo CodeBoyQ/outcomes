@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { TopBar } from './components/TopBar';
+import { PageSidebar } from './components/PageSidebar';
 import { GraphCanvas } from './components/GraphCanvas';
 import { SidePanel } from './components/SidePanel';
 import { Toast } from './components/Toast';
@@ -16,7 +17,8 @@ function App() {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <TopBar />
-      <div className="flex-1 flex relative overflow-hidden">
+      <div className="flex-1 flex overflow-hidden">
+        <PageSidebar />
         <ReactFlowProvider>
           <GraphCanvas />
           <SidePanel />

@@ -1,7 +1,14 @@
 export type OutcomeStatus = 'todo' | 'wait' | 'inprogress' | 'done';
 
+export interface Page {
+  id: string;
+  name: string;
+  created_at: string;
+}
+
 export interface Outcome {
   id: string;
+  page_id: string;
   title: string;
   status: OutcomeStatus;
   strategy: string;

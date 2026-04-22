@@ -73,6 +73,12 @@ SidePanel maintains local copies of all fields; changes require an explicit Save
 - `updatePosition` is called on every drag-stop with no debounce; rapid moves can fire many Supabase writes.
 - `deadline` is stored as a plain string; no validation or past-deadline warnings exist.
 
+### SQL Scripts
+
+All data model changes go in `sql/` as numbered migration files (`03_...`, `04_...`, etc.). Existing files:
+- `01_initial_schema.sql` — fresh project setup (`outcomes`, `dependencies`)
+- `02_add_pages.sql` — adds `pages` table, migrates existing outcomes
+
 ### Persistence
 
 Supabase is the primary store. If `VITE_SUPABASE_URL` is not a valid HTTPS URL the client is `null` and the store transparently falls back to `localStorage`. This enables fully offline use.
